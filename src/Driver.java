@@ -14,6 +14,7 @@ public class Driver
 	     start = scan.nextInt();
 	     scan.nextLine();
 	     boolean ans = avl.add(start);
+               avl.InOrder(avl.root);
 	     if(!ans)
 	        System.out.println(start + " not added");
 	    } while(start != -1);
