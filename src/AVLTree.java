@@ -97,13 +97,24 @@ public class AVLTree {
             /* Adjust the balances to be their new values after
              the rotates are performed.
              */
-//            if (){ // has to do with the increase and decrease of the tree 
-//                
-//            } else if () {
-//                
-//            } else {
-//
-//            }
+            if (rightLeftChild.balance > Node.BALANCED){ 
+                     //if the rightLeftChild's balance is positive it's right heavy 
+                     //but when you're done rotating the balance values will be different
+                localRoot.balance--;
+                rightLeftChild.balance--;
+                rightChild.balance++;
+                
+            } else if (rightLeftChild.balance < Node.BALANCED) { //the rightLeftChild balance value is negative you have a 
+                                                                //different issue where you must update the balance values
+                localRoot.balance--;
+                rightLeftChild.balance++;
+                rightChild.balance++;
+                
+            } else { //The balance is 0 of the rightleftChild so all the nodes effected should go to zero
+                localRoot.balance = Node.BALANCED;
+                rightLeftChild.balance = Node.BALANCED;
+                rightChild.balance = Node.BALANCED;
+            }
             /**
              * After the rotates the overall height will be reduced thus
              * increase is now false, but decrease is now true.
@@ -111,50 +122,49 @@ public class AVLTree {
             increase = false;
             decrease = true;
       // Perform double rotation
-
-            return rebalanceRight(rotateRight(localRoot));  // change this
-        }
-        if () {  // Right-Right
-            /* In this case both the rightChild (the new root)
-             and the root (new left child) will both be balanced
-             after the rotate. Also the overall height will be
-             reduced, thus increase will be false, but decrease
-             will be true.
-             */
-            increase = false;
-            decrease = true;
-        } else { //Right - Balanced (Rotations are still going to be done)
+            rotateRight(rightChild);
+            return rebalanceRight(rotateRight(rightChild));
+        }else { //Right - Balanced (Rotations are still going to be done)
             /* After the rotate the rightChild (new root) will
              be left heavy, and the local root (new left child)
              will be right heavy. The overall height of the tree
              will not change, thus increase and decrease remain
              unchanged.
              */
-            
+            increase = false;
+            decrease = true;
         }
         // Now rotate the
+        System.out.println("You will always reach this when rebalance right is called");
         return rotateLeft(localRoot);
     }
 
     private Node rebalanceLeft(Node localRoot) {
-        /* I took all of this one out, but it's a mirror 
-         image of the one above. */
-
-        if (leftChild.balance < Node.LEFT_HEAVY) {
-
-            if (true) {
-
-            } else if () {
+        Node leftChild = localRoot.getLeft();
+        if (leftChild.balance > Node.RIGHT_HEAVY) {// if it is a left-right Heavy tree
+            Node leftRightChild = leftChild.getRight();
+            if (leftRightChild.balance > Node.BALANCED) { // this if and else if are reversed for me
+                localRoot.balance--;
+                leftRightChild.balance--;
+                leftChild.balance++;
+            } else if (leftRightChild.balance < Node.BALANCED) {
+                localRoot.balance--;
+                leftRightChild.balance++;
+                leftChild.balance++;
             } else {
-
+                localRoot.balance = Node.BALANCED;
+                leftRightChild.balance = Node.BALANCED;
+                leftChild.balance = Node.BALANCED;
             }
-
-            return localRoot;  // change this
+            increase = false;
+            decrease = true;
+            
+            rotateLeft(leftChild);
+            return rebalanceLeft(rotateRight(localRoot));  // change this
         }
-        if () {
-
-        } else {
-
+        else { //LEFT-LEFT
+            increase = false;
+            decrease = true;
         }
         // Now rotate the
         return rotateRight(localRoot);
